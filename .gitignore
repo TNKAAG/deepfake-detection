@@ -1,0 +1,47 @@
+# ── Dataset & extracted frames (too large for git) ───────────────
+archive/
+src/data/train/
+src/data/val/
+src/data/test/
+
+# ── Trained model weights ─────────────────────────────────────────
+src/models/*.pth
+
+# Keep the training log CSV — small and useful for teammates
+!src/models/baseline_training_log.csv
+!src/models/efficientnet_training_log.csv
+
+# ── Manifest CSVs are KEPT — teammates need these to extract frames
+# src/data/*.csv  ← do NOT ignore these
+
+# ── Python ────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# ── Jupyter ───────────────────────────────────────────────────────
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# ── Virtual environments ──────────────────────────────────────────
+.venv/
+venv/
+env/
+ENV/
+
+# ── OS junk ───────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── IDE ───────────────────────────────────────────────────────────
+.idea/
+.vscode/
+*.suo
+*.user
