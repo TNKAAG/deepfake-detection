@@ -1,4 +1,5 @@
 # CS464 — Deepfake Detection
+
 **Group 14** | George · Nana · Shaun · Victor
 
 Binary deepfake detection using the FaceForensics++ C23 dataset.
