@@ -1,0 +1,27 @@
+# ── Deep Learning ────────────────────────────────────────────────
+# For CUDA (Windows/Linux with NVIDIA GPU):
+#   pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+# For macOS (Apple Silicon MPS):
+#   pip install torch torchvision torchaudio
+torch>=2.0.0
+torchvision>=0.15.0
+torchaudio>=2.0.0
+
+# ── Data & ML ────────────────────────────────────────────────────
+scikit-learn>=1.3.0
+pandas>=2.0.0
+numpy>=1.24.0
+
+# ── Image processing ─────────────────────────────────────────────
+# NOTE: decord (video frame extraction) is NOT listed here because:
+#   1. Frames are already extracted to src/data/ — no re-extraction needed.
+#   2. decord has no Python 3.14 wheel (use Python 3.11/3.12 if you need it).
+Pillow>=10.0.0
+
+# ── Notebook & Visualisation ─────────────────────────────────────
+jupyter>=1.0.0
+notebook>=7.0.0
+matplotlib>=3.7.0
+
+# ── Utilities ────────────────────────────────────────────────────
+tqdm>=4.65.0

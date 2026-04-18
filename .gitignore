@@ -1,5 +1,6 @@
 # ── Dataset & extracted frames (too large for git) ───────────────
 archive/
+data/
 src/data/train/
 src/data/val/
 src/data/test/

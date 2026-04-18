@@ -33,7 +33,7 @@ from collections import Counter
 # workspace/src/scripts/ → up three levels to workspace/
 WORKSPACE_ROOT = Path(__file__).resolve().parent.parent.parent
 
-DATA_DIR = WORKSPACE_ROOT / "src" / "data"
+DATA_DIR = WORKSPACE_ROOT / "data"
 
 IMAGENET_MEAN = [0.485, 0.456, 0.406]
 IMAGENET_STD  = [0.229, 0.224, 0.225]

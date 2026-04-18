@@ -41,7 +41,7 @@ from dataloaders import get_dataloaders, get_device, sanity_check
 # workspace/src/scripts/ → up three levels to workspace/
 WORKSPACE_ROOT = Path(__file__).resolve().parent.parent.parent
 
-DATA_DIR   = WORKSPACE_ROOT / "src" / "data"
+DATA_DIR   = WORKSPACE_ROOT / "data"
 MODELS_DIR = WORKSPACE_ROOT / "src" / "models"
 
 NUM_EPOCHS    = 20
