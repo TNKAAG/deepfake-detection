@@ -36,6 +36,8 @@ from dataloaders import get_dataloaders, get_device
 from baseline_cnn import get_baseline_model
 from efficientnet import get_efficientnet
 from xception import get_xception
+from frequency_cnn import get_frequency_cnn, FrequencyTransform
+from vit_model import get_vit_model
 
 # ─────────────────────────────────────────────
 # CONFIG
@@ -48,36 +50,63 @@ MODELS_DIR     = WORKSPACE_ROOT / "src" / "models"
 BATCH_SIZE   = 32
 NUM_WORKERS  = 4
 
+
+# ─────────────────────────────────────────────
+# SPECIAL DATALOADER FOR FREQUENCY CNN
+# ─────────────────────────────────────────────
+
+def get_frequency_dataloader(data_dir: Path, batch_size: int = 32) -> torch.utils.data.DataLoader:
+    """
+    Build a special dataloader for FrequencyCNN that uses DCT transform
+    instead of standard RGB preprocessing.
+    """
+    from torchvision.datasets import ImageFolder
+    from torch.utils.data import DataLoader
+    
+    transform = FrequencyTransform(size=128)
+    dataset   = ImageFolder(data_dir / "test", transform=transform)
+    loader    = DataLoader(dataset, batch_size=batch_size, shuffle=False, num_workers=NUM_WORKERS)
+    
+    return loader
+
+
+# ─────────────────────────────────────────────
+# MODEL REGISTRY
+# ─────────────────────────────────────────────
+
 # Registry of models to evaluate.
-# Add Xception, FrequencyNet, ViT entries here as teammates finish training.
-# Each entry: (display_name, checkpoint_filename, model_factory_function)
+# Each entry: (display_name, checkpoint_filename, model_factory_function, needs_custom_dataloader)
 MODEL_REGISTRY = [
     (
         "Baseline CNN",
         "baseline_cnn_best.pth",
         lambda: get_baseline_model(),
+        False,
     ),
     (
         "EfficientNet-B0",
         "efficientnet_phase2_best.pth",
         lambda: get_efficientnet(),
+        False,
     ),
     (
         "Xception",
         "xception_best.pth",
         lambda: get_xception(),
+        False,
     ),
-    # ── Add remaining teammates' models below as they become available ──
-    # (
-    #     "Frequency CNN",
-    #     "frequencycnn_best.pth",
-    #     lambda: get_frequency_cnn(),  # import from frequency_cnn.py
-    # ),
-    # (
-    #     "ViT-B/16",
-    #     "vit_best.pth",
-    #     lambda: get_vit(),            # import from vit_model.py
-    # ),
+    (
+        "Frequency CNN",
+        "frequencycnn_best.pth",
+        lambda: get_frequency_cnn(),
+        True,  # ← Uses DCT preprocessing, needs custom dataloader
+    ),
+    (
+        "ViT-B/16",
+        "vit_phase2_best.pth",
+        lambda: get_vit_model(),
+        False,
+    ),
 ]
 
 # ─────────────────────────────────────────────
@@ -227,15 +256,28 @@ def main():
     device  = get_device()
     loaders = get_dataloaders(DATA_DIR, batch_size=BATCH_SIZE, num_workers=NUM_WORKERS)
 
-    # Always evaluate on the test set only — never val
+    # Standard test loader for RGB models
     test_loader = loaders["test"]
     print(f"\nTest set: {len(test_loader.dataset)} samples")
 
     all_results = []
 
-    for name, ckpt_filename, model_fn in MODEL_REGISTRY:
+    for entry in MODEL_REGISTRY:
+        # Unpack with default False for backward compat
+        if len(entry) == 4:
+            name, ckpt_filename, model_fn, needs_custom_loader = entry
+        else:
+            name, ckpt_filename, model_fn = entry
+            needs_custom_loader = False
+        
         ckpt_path = MODELS_DIR / ckpt_filename
-        metrics   = evaluate_model(name, ckpt_path, model_fn, test_loader, device)
+        
+        # Use custom dataloader for frequency CNN
+        loader = (get_frequency_dataloader(DATA_DIR, BATCH_SIZE) 
+                  if needs_custom_loader 
+                  else test_loader)
+        
+        metrics = evaluate_model(name, ckpt_path, model_fn, loader, device)
         if metrics is not None:
             all_results.append(metrics)
 
