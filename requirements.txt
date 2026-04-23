@@ -1,0 +1,12 @@
+# Core deep learning
+torch>=2.10.0
+torchvision>=0.21.0   # must match torch major version — see pytorch.org/get-started
+
+# Data pipeline
+opencv-python>=4.8.0  # video reading (02_extract_frames.py)
+pandas>=2.0.0
+Pillow>=10.0.0
+
+# Training utilities
+scikit-learn>=1.3.0   # roc_auc_score, train_test_split
+tqdm>=4.60.0
