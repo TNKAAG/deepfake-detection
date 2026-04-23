@@ -1,5 +1,4 @@
 # CS464 — Deepfake Detection
-
 **Group 14** | George · Nana · Shaun · Victor
 
 Binary deepfake detection using the FaceForensics++ C23 dataset.
@@ -22,24 +21,37 @@ workspace/
 │       └── original/
 └── src/
     ├── scripts/
-    │   ├── 01_split_videos.py       split videos into train/val/test manifests
-    │   ├── 02_extract_frames.py     extract frames from videos into src/data/
-    │   ├── 03_dataloaders.py        PyTorch dataloaders + transforms
-    │   ├── baseline_cnn.py          baseline CNN model definition
-    │   ├── 04_train_baseline.py     baseline training loop
-    │   ├── efficientnet.py          EfficientNet-B0 model  (coming soon)
-    │   └── 05_train_efficientnet.py EfficientNet training loop (coming soon)
-    ├── data/                        ← NOT in git (frames too large)
-    │   ├── train_manifest.csv       video-level split manifests — ARE in git
+    │   ├── 01_split_videos.py         video-level train/val/test split
+    │   ├── 02_extract_frames.py       extract frames to src/data/
+    │   ├── 03_dataloaders.py          PyTorch dataloaders + transforms
+    │   ├── baseline_cnn.py            baseline CNN model
+    │   ├── 04_train_baseline.py       baseline training loop
+    │   ├── efficientnet.py            EfficientNet-B0 with 2-phase training
+    │   ├── 05_train_efficientnet.py   EfficientNet training loop
+    │   ├── xception.py                Xception model
+    │   ├── frequency_cnn.py           Frequency-domain CNN (DCT input)
+    │   ├── vit_model.py               Vision Transformer (ViT-B/16)
+    │   ├── train_vit.py               ViT 2-phase training loop
+    │   └── 06_evaluate.py             unified evaluation for all models
+    ├── data/                          ← NOT in git (frames too large)
+    │   ├── train_manifest.csv         video-level splits — ARE in git
     │   ├── val_manifest.csv
     │   ├── test_manifest.csv
     │   ├── train/ real/ fake/
     │   ├── val/   real/ fake/
     │   └── test/  real/ fake/
-    ├── models/                      ← .pth files not in git
-    │   └── baseline_training_log.csv
+    ├── models/                        ← .pth files NOT in git
+    │   ├── baseline_cnn_best.pth      
+    │   ├── efficientnet_phase2_best.pth
+    │   ├── xception_best.pth
+    │   ├── frequencycnn_best.pth
+    │   ├── vit_phase2_best.pth
+    │   ├── baseline_training_log.csv   ← training logs ARE in git
+    │   ├── efficientnet_training_log.csv
+    │   ├── vit_training_log.csv
+    │   └── evaluation_results.csv
     └── notebooks/
-        └── main.ipynb               summary notebook
+        └── main.ipynb                 summary notebook with all results
 ```
 
 ---
